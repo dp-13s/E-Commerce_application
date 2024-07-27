@@ -1,7 +1,9 @@
 package com.example.myapplication.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -44,6 +46,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.slider);
         dotsLayout = findViewById(R.id.dots);
 
+
         addDots(0);
 
         btn = findViewById(R.id.get_started_btn);
@@ -53,6 +56,13 @@ public class OnBoardingActivity extends AppCompatActivity {
         // Set up the adapter
         sliderAdapter = new SliderAdapter(this);
         viewPager.setAdapter(sliderAdapter);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(OnBoardingActivity.this,RegistrationActivity.class));
+                finish();
+            }
+        });
 
     }
     private void addDots(int position){
