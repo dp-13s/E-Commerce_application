@@ -1,7 +1,7 @@
 package com.example.myapplication.adapters;
 
+
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +19,11 @@ import java.util.List;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
     private Context context;
-    private List<CategoryModel>list;
+    private List<CategoryModel> list;
 
-
-    public CategoryAdapter(Context context,List<CategoryModel> list) {
+    public CategoryAdapter(Context context, List<CategoryModel> list) {
         this.context = context;
         this.list = list;
-
     }
 
     @NonNull
@@ -35,29 +33,28 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, int position) {
 
-        Glide.with(Context).load(list.get(position).getImg_url()).into(holder.catImg);
+        Glide.with(context).load(list.get(position).getImg_url()).into(holder.catImg);
         holder.catName.setText(list.get(position).getName());
-
     }
 
     @Override
     public int getItemCount() {
-
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+
+    public class ViewHolder {
 
         ImageView catImg;
         TextView catName;
 
         public ViewHolder(@NonNull View itemView){
-
             super(itemView);
             catImg = itemView.findViewById(R.id.cat_img);
             catName = itemView.findViewById(R.id.cat_name);
+
         }
     }
 }
