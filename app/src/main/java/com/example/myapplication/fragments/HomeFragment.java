@@ -1,11 +1,15 @@
 package com.example.myapplication.fragments;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +19,8 @@ import com.example.myapplication.R;
 import com.example.myapplication.adapters.CategoryAdapter;
 import com.example.myapplication.adapters.SliderAdapter;
 import com.example.myapplication.models.CategoryModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Firebase;
 
 import java.util.ArrayList;
@@ -40,13 +46,32 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_home,container,false);
-
         catRecyclerView = root.findViewById(R.id.rec_category);
+
+        db = FirerebaseFirestore.getInstance();
 
         catRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
         categoryModelList = new ArrayList<>();
         categoryAdapter = new CategoryAdapter(getActivity(),categoryModelList);
         catRecyclerView.setAdapter(categoryAdapter);
+
+
+        db.collection("Category")
+                .get()
+                .addOnSuccessListener(new OnCompleteListener<QuerySnapshot>(){
+                    @Override
+                    public  void onComplete(@NonNull Task<QuerySnapshot> task){
+                        if (task.isSuccessful()){
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                CategoryModel categoryModel = document.toObject(CategoryModel.class);
+                                categoryModelList.add(categoryModel);
+                                categoryAdapter.notifyDataSetChanged();
+                            }
+                        }else {
+                            Log.w(TAG,"Error getting Documents.",task.getException());
+                        }
+                    }
+                });
 
 
 //        ImageSlider imageSlider = root.findViewById(R.id.image_slider);
